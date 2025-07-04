@@ -7,15 +7,16 @@ int main(void)
 {
 	FILE *fptr = NULL;
 	char *tokens[MAX_TOKEN];
-	int num_tokens;
+	int i = 0;
 
-	num_tokens = lexer_riscv(fptr, "../example.s", tokens);
+	lexer_riscv(fptr, "../example.s", tokens);
 
-	for (int i = 0; i < num_tokens; i++) {
+	while (tokens[i] != NULL) {
 		printf("%s\n", tokens[i]);
+		i++;
 	}
 
-	free_tokens(tokens, num_tokens);
+	free_tokens(tokens);
 
 
 	return 0;

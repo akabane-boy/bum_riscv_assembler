@@ -38,7 +38,7 @@ void delete_comments(char *line)
  * Modify them into tokens.
  * Give it to char **arr.
  */
-int lexer_riscv(FILE *fptr, char *filename, char **arr) {
+void lexer_riscv(FILE *fptr, char *filename, char **arr) {
 	char line[256];
 	char *token = NULL;
 	int i = 0;
@@ -69,13 +69,13 @@ int lexer_riscv(FILE *fptr, char *filename, char **arr) {
 		i++;
 	}
 	fclose(fptr);
-
-	return i;
+	arr[i] = NULL;
 }
 
-void free_tokens(char **arr, int size)
+void free_tokens(char **arr)
 {
-	for (int i = 0; i < size; i++) {
-		free(arr[i]);
+	int i = 0;
+	while (arr[i] != NULL) {
+		free(arr[i++]);
 	}
 }
