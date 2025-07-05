@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "../include/parser.h"
-
 
 void free_Inst(Instruction inst)
 {
@@ -27,6 +27,151 @@ void free_Inst_arr(Instruction *inst_arr, int num_of_inst)
 		free_Inst(inst_arr[i]);
 	}
 }
+
+/* returns true for x0 ~ x31 */
+bool is_valid_register(char *token)
+{
+	if (token[0] != 'x') return false;
+	char *endptr;
+	long num;
+	num = strtol(token + 1, &endptr, 10);
+	if (*endptr == '\0' && 0 <= num && num < 32) return true;
+	else return false;
+}
+
+/* 
+ * Create seperate parsing function for different types.
+ */
+
+/* 
+ * Parse R-type
+ */
+int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse I-type
+ */
+int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	inst_arr[*num_of_inst].imme = strdup(tokens[++*i]);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse S-type
+ */
+int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse B-type
+ */
+int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	inst_arr[*num_of_inst].imme = strdup(tokens[++*i]);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse U-type
+ */
+int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	inst_arr[*num_of_inst].imme = strdup(tokens[++*i]);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse J-type
+ */
+int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Later, check if immediate is valid or not (register implemented) */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
+	if (is_valid_register(tokens[++*i]))
+		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
+	else
+		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+	inst_arr[*num_of_inst].imme = strdup(tokens[++*i]);
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+/* 
+ * Parse NOP-type
+ */
+int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
+	/* Acts like addi with (addi x0, x0, 0) which does nothing (pseudo-instruction). Advancing the program counter. */
+	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]); 
+	inst_arr[*num_of_inst].rd = strdup("0");
+	inst_arr[*num_of_inst].rs1 = strdup("0");
+	inst_arr[*num_of_inst].imme = strdup("0");
+	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* If parsing successes, return 1 (true) */
+	return 1;
+}
+
+
 
 /* 
  * Gets array of tokens.
@@ -81,150 +226,100 @@ int parser_riscv(char **tokens, Instruction *inst_arr)
 	while (tokens[i] != NULL) { /* Operates to all tokens. */
 		/* checks label */
 		if ((pos_of_colon = strchr(tokens[i], ':')) != NULL) {
-			printf("This has colon.\n");
 			*pos_of_colon =  '\0';
-			printf("label: %s\n", tokens[i]);
-			inst_arr[num_of_inst].label = strdup(tokens[i]);
-		}
-
-		/* R-type */
-		/* add */
-		if ((strcmp(tokens[i], "add")) == 0) {
-			inst_arr[num_of_inst].opcode = strdup("add");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* sub */
-		else if ((strcmp(tokens[i], "sub")) == 0) {
-			inst_arr[num_of_inst].opcode = strdup("sub");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* sll rd = rs1 << rs2 */ 
-		else if ((strcmp(tokens[i], "sll")) == 0) {
-			inst_arr[num_of_inst].opcode = strdup("sll");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* slt rd = (rs1 < rs2) ? 1 : 0  */ 
-		else if ((strcmp(tokens[i], "slt")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("slt");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* sltu rd = (rs1 < rs2 unsigned) */ 
-		else if ((strcmp(tokens[i], "sltu")) == 0) {
-			inst_arr[num_of_inst].opcode = strdup("sltu");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* xor rd = (rs1 ^ rs2 ) */ 
-		else if ((strcmp(tokens[i], "xor")) == 0) {
-			inst_arr[num_of_inst].opcode = strdup("xor");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* srl rd = rs1 >> rs2 logical */ 
-		else if ((strcmp(tokens[i], "srl")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("srl");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* sra rd = rs1 >> rs2 arithmetic */ 
-		else if ((strcmp(tokens[i], "sra")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("sra");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* or rd = rs1 | rs2 */ 
-		else if ((strcmp(tokens[i], "or")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("or");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
-		}
-		/* and rd = rs1 & rs2 */
-		else if ((strcmp(tokens[i], "and")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("and");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
+			printf("Found Label: %s\n", tokens[i]);
+			inst_arr[num_of_inst].label = strdup(tokens[i++]);
 		}
 		
+		/* R-type */
+		if (
+			(strcmp(tokens[i], "add")) == 0 ||
+			(strcmp(tokens[i], "sub")) == 0 ||
+			(strcmp(tokens[i], "sll")) == 0 ||
+			(strcmp(tokens[i], "slt")) == 0 ||
+			(strcmp(tokens[i], "sltu")) == 0 ||
+			(strcmp(tokens[i], "xor")) == 0 ||
+			(strcmp(tokens[i], "srl")) == 0 ||
+			(strcmp(tokens[i], "sra")) == 0 ||
+			(strcmp(tokens[i], "or")) == 0 ||
+			(strcmp(tokens[i], "and")) == 0) {
+			if (!parse_r_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
+		}
+		
+
 		/* I-type */
-		/* addi rd = rs1 + imm */
-		else if ((strcmp(tokens[i], "addi")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("addi");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].imme = strdup(tokens[++i]);
-			num_of_inst++;
+		else if (
+			(strcmp(tokens[i], "addi")) == 0 ||
+			(strcmp(tokens[i], "andi")) == 0 ||
+			(strcmp(tokens[i], "ori")) == 0 ||
+			(strcmp(tokens[i], "xori")) == 0 ||
+			(strcmp(tokens[i], "slli")) == 0 ||
+			(strcmp(tokens[i], "srli")) == 0 ||
+			(strcmp(tokens[i], "srai")) == 0 ||
+			(strcmp(tokens[i], "lb")) == 0 ||
+			(strcmp(tokens[i], "lh")) == 0 ||
+			(strcmp(tokens[i], "lw")) == 0 ||
+			(strcmp(tokens[i], "jalr")) == 0) {
+			if (!parse_i_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
 		}
 
 		/* S-type */
-		/* later or maybe not */
-
-		/* B-type */
-		/* beq Branch if equal */
-		else if ((strcmp(tokens[i], "beq")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("beq");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].imme = strdup(tokens[++i]);
-			num_of_inst++;
+		else if (
+			(strcmp(tokens[i], "sb")) == 0 ||
+			(strcmp(tokens[i], "sh")) == 0 ||
+			(strcmp(tokens[i], "sw")) == 0) {
+			if (!parse_s_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
 		}
 
-		/* bnq Branch if not equal */
-		else if ((strcmp(tokens[i], "bne")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("bne");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs1 = strdup(tokens[++i]);
-			inst_arr[num_of_inst].rs2 = strdup(tokens[++i]);
-			num_of_inst++;
+		/* B-type */
+		else if (
+			(strcmp(tokens[i], "beq")) == 0 ||
+			(strcmp(tokens[i], "bne")) == 0 ||
+			(strcmp(tokens[i], "blt")) == 0 ||
+			(strcmp(tokens[i], "bge")) == 0 ||
+			(strcmp(tokens[i], "bltu")) == 0 ||
+			(strcmp(tokens[i], "bgeu")) == 0) {
+			if (!parse_b_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
 		}
 
 		/* U-type */
-		/* later or maybe not */
+		else if (
+			(strcmp(tokens[i], "lui")) == 0 ||
+			(strcmp(tokens[i], "auipc")) == 0) {
+			if (!parse_u_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
+		}
 
 		/* J-type */
-		/* jal Jump and link */
-		else if ((strcmp(tokens[i], "jal")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("jal");
-			inst_arr[num_of_inst].rd = strdup(tokens[++i]);
-			num_of_inst++;
+		else if (
+			(strcmp(tokens[i], "jal")) == 0) {
+			if (!parse_j_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
 		}
 
-		/* temp for nop */
-		else if ((strcmp(tokens[i], "nop")) == 0) { 
-			inst_arr[num_of_inst].opcode = strdup("nop");
-			num_of_inst++;
+		/* NOP-type */
+		else if (
+			(strcmp(tokens[i], "nop")) == 0) {
+			if (!parse_nop_type(tokens, &i, inst_arr, &num_of_inst))
+				printf("Parsing error\n");
 		}
 
+		/* INVALID */
+		else {
+			fprintf(stderr, "Invalid syntax: %s\n", tokens[i]);
+		}
+		
 		i++;
 
 	}
 	for (k = 0; k < num_of_inst; k++) {
-		printf("{\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n}\n",	
+		printf("{\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n\t.imme = %s\n}\n",	
 				inst_arr[k].label, inst_arr[k].opcode, inst_arr[k].rd,
-				inst_arr[k].rs1, inst_arr[k].rs2
+				inst_arr[k].rs1, inst_arr[k].rs2, inst_arr[k].imme
 		);
 	}
 	return num_of_inst;

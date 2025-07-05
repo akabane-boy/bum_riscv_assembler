@@ -11,15 +11,25 @@ int main(void)
 	int i = 0;
 	int num_of_inst = 0;
 
+	printf("\n**My RISC-V Assembler**\n\n");
+	printf("-------------------------------------------\n");
+	printf("Lexer starts:\n");
+	printf("-------------------------------------------\n");
 	lexer_riscv(fptr, "./example.s", tokens);
 
 	while (tokens[i] != NULL) {
-		printf("Token's coming!: %s\n", tokens[i]);
+		printf("Token #%d: %s\n", i, tokens[i]);
 		i++;
 	}
 
+	printf("\n-------------------------------------------\n");
+	printf("Array of Instructions:\n");
+	printf("-------------------------------------------\n");
 	num_of_inst = parser_riscv(tokens, inst_arr);
 
+	printf("\n-------------------------------------------\n");
+	printf("Free-ing process:\n");
+	printf("-------------------------------------------\n");
 	free_tokens(tokens);
 	free_Inst_arr(inst_arr, num_of_inst);
 
