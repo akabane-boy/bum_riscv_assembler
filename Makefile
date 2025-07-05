@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Iinclude
+CFLAGS = -g -Wall -Wextra -Iinclude
 
 # Source and object files
 SRC = src/main.c src/lexer.c src/parser.c
