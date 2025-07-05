@@ -16,3 +16,4 @@ Aims to learn how assembler works and get C programming experience.
 ## DONE
 - lexer.c
 
+## TEST!
