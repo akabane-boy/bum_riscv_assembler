@@ -81,7 +81,6 @@ bool is_valid_immediate(char *token, InstType type)
  * Parse R-type
  */
 int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
@@ -106,7 +105,6 @@ int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
  * Parse I-type
  */
 int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
@@ -131,7 +129,6 @@ int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
  * Parse S-type
  */
 int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
@@ -156,7 +153,6 @@ int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
  * Parse B-type
  */
 int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
@@ -181,7 +177,6 @@ int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
  * Parse U-type
  */
 int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
@@ -202,7 +197,6 @@ int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
  * Parse J-type
  */
 int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst) {
-	/* Later, check if immediate is valid or not (register implemented) */
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
@@ -244,44 +238,6 @@ int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_ins
  */
 int parser_riscv(char **tokens, Instruction *inst_arr)
 {
-	/*
-	 * R-type:
-	 * add, sub, and, or, sll, slt, sra, xor
-	 *
-	 * opcode 7, rd 5, funct3 3, rs1 5, rs2 5, funct7 7
-	 */
-
-	/*
-	 * I-type:
-	 * addi, andi, ori, lb, ln, lw, jalr
-	 *
-	 * opcode 7, rd 5, funct3 3, rs1 5, imm[11:0] 12
-	 */
-
-	/* S-type:
-	 * sb, sh, sw
-	 *
-	 * opcode 7, imm[4:0] 5, funct3 3, rs1 5, rs2 5, imm[11:5] 7
-	 */
-
-	/* B-type:
-	 * beq, bne, blt, bge, bltu, bgeu
-	 *
-	 * opcode 7, imm 1, imm[4:1] 4, funct3 3, rs1 5, rs2 5, imm[10:5] 6, imm 1
-	 */
-
-	/* U-type:
-	 * lui, auipc
-	 *
-	 * opcode 7, rd 5, imm[31:12] 20
-	 */
-
-	/* J-type:
-	 * jal
-	 *
-	 * opcode 7, rd 5, imm[19:12] 8, imm 1, imm[10:1] 10, imm 1
-	 */
-
 	int i = 0, num_of_inst  = 0, k = 0;
 	char *pos_of_colon = NULL;
 	/* Initialize instruction array */
