@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "../include/parser.h"
+#include "../include/lut.h"
 
 void free_Inst(Instruction inst)
 {
@@ -84,19 +85,28 @@ int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_R;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -108,19 +118,28 @@ int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_immediate(tokens[++*i], TYPE_I))
 		inst_arr[*num_of_inst].imme = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_I;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -132,19 +151,28 @@ int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_immediate(tokens[++*i], TYPE_S))
 		inst_arr[*num_of_inst].imme = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_S;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -156,19 +184,28 @@ int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs1 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rs2 = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_immediate(tokens[++*i], TYPE_B))
 		inst_arr[*num_of_inst].imme = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_B;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -180,15 +217,22 @@ int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_immediate(tokens[++*i], TYPE_U))
 		inst_arr[*num_of_inst].imme = strdup(tokens[*i]);
-	else 
+	else  {
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_U;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -200,15 +244,22 @@ int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	inst_arr[*num_of_inst].opcode = strdup(tokens[*i]);
 	if (is_valid_register(tokens[++*i]))
 		inst_arr[*num_of_inst].rd = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	if (is_valid_immediate(tokens[++*i], TYPE_J))
 		inst_arr[*num_of_inst].imme = strdup(tokens[*i]);
-	else
+	else {
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
+		exit(EXIT_FAILURE);
+	}
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_J;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -224,7 +275,10 @@ int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_ins
 	inst_arr[*num_of_inst].imme = strdup("0");
 	/* Set inst type */
 	inst_arr[*num_of_inst].type = TYPE_NOP;
-	(*num_of_inst)++; /* If parsing successes, num_of_inst must be incremented. */
+	/* Set InstLUTEntry */
+	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* If parsing successes, num_of_inst must be incremented. */
+	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
 	return 1;
 }
@@ -337,9 +391,11 @@ int parser_riscv(char **tokens, Instruction *inst_arr)
 
 	}
 	for (k = 0; k < num_of_inst; k++) {
-		printf("{\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n\t.imme = %s\n}\n",	
+		printf("{\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n\t.imme = %s\n\t.lut: %s\n}\n",	
 				inst_arr[k].label, inst_arr[k].opcode, inst_arr[k].rd,
-				inst_arr[k].rs1, inst_arr[k].rs2, inst_arr[k].imme
+				inst_arr[k].rs1, inst_arr[k].rs2, inst_arr[k].imme,
+				inst_arr[k].lut->mnemonic
+
 		);
 	}
 	return num_of_inst;

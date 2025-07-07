@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "../include/lut.h"
 #include "../include/parser.h"
 #include "../include/lexer.h"
 

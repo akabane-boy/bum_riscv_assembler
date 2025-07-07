@@ -1,18 +1,10 @@
 #ifndef PARSER_H
-#include <stdbool.h>
 #define PARSER_H
-#define MAX_INST 128
 
-typedef enum {
-	TYPE_R,
-	TYPE_I,
-	TYPE_S,
-	TYPE_B,
-	TYPE_U,
-	TYPE_J,
-	TYPE_NOP,
-	TYPE_INVALID
-} InstType;
+#include <stdbool.h>
+/* #include "./lut.h" */
+
+#define MAX_INST 128
 
 typedef struct {
 	char *opcode;
@@ -22,6 +14,7 @@ typedef struct {
 	char *imme;
 	char *label; /* e.g. loop: */
 	InstType type;
+	const InstLUTEntry *lut;
 } Instruction;
 
 void free_Inst(Instruction inst);
