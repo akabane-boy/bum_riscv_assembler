@@ -63,6 +63,7 @@ This section illustrates how **bum_riscv_assembler works**.
 ## TODO:
 - Instruction table (LUT)
 - Improve error handling
+- Need to fix parser.c inst_arr[*num_of_inst].lut = lookup_inst(inst)arr[*num_of_inst].opcode);
 
 ## IN PROGRESS
 - parser.c
