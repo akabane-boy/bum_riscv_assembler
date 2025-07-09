@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdio.h>
 #include "../include/lut.h"
 #include "../include/parser.h"
 #include "../include/lexer.h"
+#include "../include/encoder.h"
 
 
 int main(void)
@@ -27,6 +29,12 @@ int main(void)
 	printf("Array of Instructions:\n");
 	printf("-------------------------------------------\n");
 	num_of_inst = parser_riscv(tokens, inst_arr);
+
+	/* testing encoder */
+	uint32_t num;
+	num = encode_r_type(&inst_arr[1]);
+	printf("%d\n", num);
+	int_to_str_print(num);
 
 	printf("\n-------------------------------------------\n");
 	printf("Free-ing process:\n");
