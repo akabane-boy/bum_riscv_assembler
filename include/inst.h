@@ -29,7 +29,6 @@ typedef struct {
 	char *rs2;
 	char *imme;
 	char *label; /* e.g. loop: */
-	InstType type;
 	const InstLUTEntry *lut;
 } Instruction;
 

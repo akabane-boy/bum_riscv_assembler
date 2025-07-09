@@ -101,8 +101,6 @@ int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid register %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_R;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -134,8 +132,6 @@ int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_I;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -167,8 +163,6 @@ int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_S;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -200,8 +194,6 @@ int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_B;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -227,8 +219,6 @@ int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_U;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -254,8 +244,6 @@ int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 		fprintf(stderr, "Invalid immediate %s at tokens[%d]\n", tokens[*i], *i);
 		exit(EXIT_FAILURE);
 	}
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_J;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
@@ -273,8 +261,6 @@ int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_ins
 	inst_arr[*num_of_inst].rd = strdup("0");
 	inst_arr[*num_of_inst].rs1 = strdup("0");
 	inst_arr[*num_of_inst].imme = strdup("0");
-	/* Set inst type */
-	inst_arr[*num_of_inst].type = TYPE_NOP;
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
 	/* If parsing successes, num_of_inst must be incremented. */
