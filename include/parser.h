@@ -2,20 +2,9 @@
 #define PARSER_H
 
 #include <stdbool.h>
-/* #include "./lut.h" */
+#include "./inst.h"
 
 #define MAX_INST 128
-
-typedef struct {
-	char *opcode;
-	char *rd;
-	char *rs1;
-	char *rs2;
-	char *imme;
-	char *label; /* e.g. loop: */
-	InstType type;
-	const InstLUTEntry *lut;
-} Instruction;
 
 void free_Inst(Instruction inst);
 void free_Inst_arr(Instruction *inst, int num_of_inst);

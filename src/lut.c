@@ -1,9 +1,6 @@
 #include <stdio.h>
+#include <string.h>
 #include "../include/lut.h"
-
-size_t get_num_of_mnemonic(void) {
-	return (sizeof(instruction_table) / sizeof(instruction_table[0]));
-}
 
 const InstLUTEntry instruction_table[] = {
 	/* R-type */
@@ -67,9 +64,9 @@ const InstLUTEntry instruction_table[] = {
  * Since if InstLUTEntry was returned, additional memory would be needed.
  * Instead, returning pointer of constants was used.
  */
-InstLUTEntry *lookup_inst(const char *mnemonic)
+const InstLUTEntry *lookup_inst(const char *mnemonic)
 {
-	for (int i = 0; i < NUM_OF_MNEMONIC; i++) {
+	for (size_t i = 0; i < NUM_OF_MNEMONIC; i++) {
 		if (strcmp(mnemonic, instruction_table[i].mnemonic) == 0) {
 			return &instruction_table[i];
 		}
