@@ -4,6 +4,7 @@
  * Output: One instruction -> One uint32_t -> convert to string of 0s, 1s. -> print
  */
 #include "../include/encoder.h"
+#include "../include/label.h"
 
 /*
  * 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -63,11 +64,41 @@ uint32_t encode_i_type(const Instruction *inst)
 }
 /*
 uint32_t encode_s_type(const Instruction *inst)
+*/
 uint32_t encode_b_type(const Instruction *inst)
 {
-	dfdf
+	int imm_num; /* immediate is 13-bit here */
+	int imm_one, imm_six, imm_four, imm_last_one;
+
+	/* encode imm into integer by using hash table */
+	for (int i = 0; i < label_count; i++) {
+		if (strcmp(inst->imme, label_table[i].label) == 0) {
+			imm_num = label_table[i].address;
+			break;
+		}
+	}
+
+	long rs1_num, rs2_num;
+	rs1_num = strtol(inst->rs1 + 1, NULL, 10);
+	rs2_num = strtol(inst->rs2 + 1, NULL, 10);
+
+	imm_num = imm_num >> 1; /* make it 12-bit */
+	/* divide? imm_num */
+	imm_one = imm_num >> 11;
+	imm_six = imm_num >> 5 & 0b0111111;
+	imm_four = imm_num >> 1 & 0b00000001111;
+	imm_last_one = imm_num & 0b000000000001;
+
+	return (imm_one << 31) |
+	(imm_six << 25) |
+	(rs2_num << 20) |
+	(rs1_num << 15) |
+	(inst->lut->funct3 << 12) |
+	(imm_four << 8) |
+	(imm_last_one << 7) |
+	(inst->lut->opcode);
+
 }
-*/
 /*
 uint32_t encode_u_type(const Instruction *inst)
 uint32_t encode_j_type(const Instruction *inst)

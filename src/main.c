@@ -32,12 +32,15 @@ int main(void)
 	num_of_inst = parser_riscv(tokens, inst_arr);
 
 	/* testing encoder */
-	uint32_t r_num, i_num;
+	uint32_t r_num, i_num, b_num;
 	r_num = encode_r_type(&inst_arr[1]);
 	i_num = encode_i_type(&inst_arr[0]);
+	b_num = encode_b_type(&inst_arr[4]);
 	int_to_str_print(r_num);
 	printf("\n");
 	int_to_str_print(i_num);
+	printf("\n");
+	int_to_str_print(b_num);
 
 	printf("\n-------------------------------------------\n");
 	printf("Free-ing process:\n");

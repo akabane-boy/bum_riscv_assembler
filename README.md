@@ -75,3 +75,7 @@ This section illustrates how **bum_riscv_assembler works**.
 So the whole process of B-type instruction can be summarized like this: 
 1. If we met the actual label in the process of parsing, store corresponding label and address to a list of label table.
 2. In the process of encoding, if we met the label, which is in the immediate, then get the address from list of label table and then encode into binaries to corresponding instruction format.
+
+B-type immediate encoding
+----
+13-bit signed value gives more range to offset. Since also its LSB is always zero, when encoding, LSB can be omitted and it is more efficient to deal with them.
