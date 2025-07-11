@@ -4,6 +4,10 @@
 #include <stdbool.h>
 #include "../include/parser.h"
 #include "../include/lut.h"
+#include "../include/label.h"
+
+labelEntry label_table[MAX_LABEL_TABLE];
+int label_count = 0;
 
 void free_Inst(Instruction inst)
 {
@@ -74,6 +78,16 @@ bool is_valid_immediate(char *token, InstType type)
 	}
 }
 
+/* Check if it has a label, if so, add labelEntry to label_table[] */
+void add_label_table(Instruction *inst)
+{
+	if (inst->label != NULL) { /* if it has label */
+		label_table[label_count].label = strdup(inst->label);
+		label_table[label_count].address = inst->pc;
+		label_count++;
+	}
+}
+
 /* 
  * Create seperate parsing function for different types.
  */
@@ -103,6 +117,10 @@ int parse_r_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -134,6 +152,10 @@ int parse_i_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -165,6 +187,10 @@ int parse_s_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -196,6 +222,10 @@ int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -221,6 +251,10 @@ int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -246,6 +280,10 @@ int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 	}
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -263,6 +301,10 @@ int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_ins
 	inst_arr[*num_of_inst].imme = strdup("0");
 	/* Set InstLUTEntry */
 	inst_arr[*num_of_inst].lut = lookup_inst(inst_arr[*num_of_inst].opcode);
+	/* Set PC */
+	inst_arr[*num_of_inst].pc = *num_of_inst * 4;
+	/* Configure label_table if it has label */
+	add_label_table(&inst_arr[*num_of_inst]);
 	/* If parsing successes, num_of_inst must be incremented. */
 	(*num_of_inst)++; 
 	/* If parsing successes, return 1 (true) */
@@ -377,8 +419,8 @@ int parser_riscv(char **tokens, Instruction *inst_arr)
 
 	}
 	for (k = 0; k < num_of_inst; k++) {
-		printf("{\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n\t.imme = %s\n\t.lut: %s\n}\n",	
-				inst_arr[k].label, inst_arr[k].opcode, inst_arr[k].rd,
+		printf("{\n\t.pc = %d\n\t.label = %s\n\t.opcode = %s\n\t.rd = %s\n\t.rs1 = %s\n\t.rs2 = %s\n\t.imme = %s\n\t.lut: %s\n}\n",	
+				inst_arr[k].pc, inst_arr[k].label, inst_arr[k].opcode, inst_arr[k].rd,
 				inst_arr[k].rs1, inst_arr[k].rs2, inst_arr[k].imme,
 				inst_arr[k].lut->mnemonic
 

@@ -3,6 +3,9 @@
 #include "../include/lut.h"
 
 const InstLUTEntry instruction_table[] = {
+	/*
+	 * { mnemonic, opcode, funct3, funct7, type }
+	 */
 	/* R-type */
 	{ "add", 0x33, 0x0, 0x00, TYPE_R },
 	{ "sub", 0x33, 0x0, 0x20, TYPE_R },

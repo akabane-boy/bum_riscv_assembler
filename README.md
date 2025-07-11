@@ -70,3 +70,8 @@ This section illustrates how **bum_riscv_assembler works**.
 
 ## DONE
 - lexer.c
+
+## NOTES
+So the whole process of B-type instruction can be summarized like this: 
+1. If we met the actual label in the process of parsing, store corresponding label and address to a list of label table.
+2. In the process of encoding, if we met the label, which is in the immediate, then get the address from list of label table and then encode into binaries to corresponding instruction format.

@@ -23,12 +23,14 @@ typedef struct {
 } InstLUTEntry;
 
 typedef struct {
+	int pc; /* might use negative value due to beq of bne */
 	char *opcode;
 	char *rd;
 	char *rs1;
 	char *rs2;
 	char *imme;
 	char *label; /* e.g. loop: */
+	char *label_ref; /* If inst. uses the label, store it here. So that it can be used in parser. */
 	const InstLUTEntry *lut;
 } Instruction;
 
