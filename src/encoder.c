@@ -101,7 +101,58 @@ uint32_t encode_b_type(const Instruction *inst)
 }
 /*
 uint32_t encode_u_type(const Instruction *inst)
+*/
 uint32_t encode_j_type(const Instruction *inst)
+{
+	/*
+	 * imm[20] 1
+	 * imm[10:1] 10
+	 * imm[11] 1
+	 * imm[19:12] 8
+	 * rd 5
+	 * opcode 7
+	 */
+	/* 
+	 * **Different from immediate from B-type**
+	 * immediate holds offset:
+	 * label_address - current-PC
+	 */
+	int label_address;
+	int imm_num; /* find through hash table */
+
+	/* Get label_address */
+	for (int i = 0; i < label_count; i++) {
+		if (strcmp(label_table[i].label, inst->imme) == 0) {
+			printf("%d\n", i);
+			label_address = label_table[i].address;
+			break;
+		}
+	}
+	/* Substract current-PC */
+	imm_num = label_address - inst->pc;
+
+	int rd_num;
+	rd_num = strtol(inst->rd + 1, NULL, 10);
+
+	int imm_one, imm_ten, imm_next_one, imm_eight;
+
+	/* remove LSB */
+	imm_num = imm_num >> 1;
+
+	/* extract */
+	imm_one = imm_num >> 19;
+	imm_ten = imm_num & 0b00000000001111111111;
+	imm_next_one = imm_num >> 10 & 0b0000000001;
+	imm_eight = imm_num >> 11 & 0b011111111;
+
+	return (imm_one << 31) |
+	(imm_ten << 21) |
+	(imm_next_one << 20) |
+	(imm_eight << 12) |
+	(rd_num << 7) |
+	(inst->lut->opcode);
+}
+/*
 uint32_t encode_nop_type(const Instruction *inst)
 */
 
