@@ -11,12 +11,19 @@ foo@bar:~$ ./bumriscvassembler
 ```
 ## Result
 - Example assembly file.
+
 ![example.s](./img/example.png)
+
 - Results of executing the program.
+
 ![result-terminal1](./img/terminal1.png)
+
 ![result-terminal2](./img/terminal2.png)
+
 ![result-terminal3](./img/terminal3.png)
+
 - Resulting .txt and .bin files.
+
 ![result-img](./img/result-img.png)
 	
 
