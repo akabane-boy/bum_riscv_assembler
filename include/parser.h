@@ -16,6 +16,5 @@ int parse_b_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst)
 int parse_u_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst);
 int parse_j_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst);
 int parse_nop_type(char **tokens, int *i, Instruction *inst_arr, int *num_of_inst); 
-int parser_riscv(char **tokens, Instruction *inst_arr);
 
 #endif /* PARSER_H */

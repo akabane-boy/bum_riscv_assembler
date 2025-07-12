@@ -1,10 +1,25 @@
-# bum_riscv_assembler
+# bumriscvassembler
 
-**bum_riscv_assembler** is a simple RISC-V assembler in C.
+**bumriscvassembler** is a simple RISC-V assembler in C.
 
 Aims to learn how assembler works and get C programming experience.
 
+## Usage
+```console
+foo@bar:~$ make
+foo@bar:~$ ./bumriscvassembler
+```
+## Result
+- Example assembly file.
+![example.s](./img/example.png)
+- Results of executing the program.
+![result-terminal1](./img/terminal1.png)
+![result-terminal2](./img/terminal2.png)
+![result-terminal3](./img/terminal3.png)
+- Resulting .txt and .bin files.
+![result-img](./img/result-img.png)
 	
+
 ## Instruction format
 Logical (assembly) order
 ### R-type:
@@ -58,24 +73,7 @@ This section illustrates how **bum_riscv_assembler works**.
 3. Identify instruction mnemonic.
 4. Verify legal syntax.
 5. Create array of Instruction consists of instruction fields.
-6. Later...
+6. Create hash table of all labels and their addresses.
+7. Parse and Encode.
+8. Write into .txt and .bin files.
 
-## TODO:
-- Instruction table (LUT)
-- Improve error handling
-- Need to fix parser.c inst_arr[*num_of_inst].lut = lookup_inst(inst)arr[*num_of_inst].opcode);
-
-## IN PROGRESS
-- parser.c
-
-## DONE
-- lexer.c
-
-## NOTES
-So the whole process of B-type instruction can be summarized like this: 
-1. If we met the actual label in the process of parsing, store corresponding label and address to a list of label table.
-2. In the process of encoding, if we met the label, which is in the immediate, then get the address from list of label table and then encode into binaries to corresponding instruction format.
-
-B-type immediate encoding
-----
-13-bit signed value gives more range to offset. Since also its LSB is always zero, when encoding, LSB can be omitted and it is more efficient to deal with them.

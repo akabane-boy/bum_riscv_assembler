@@ -156,14 +156,3 @@ uint32_t encode_j_type(const Instruction *inst)
 uint32_t encode_nop_type(const Instruction *inst)
 */
 
-void int_to_str_print(uint32_t num)
-{
-	for (int i = 31; i >= 0; i--) {
-		printf("%c", (num & (1U << i)) ? '1' : '0');
-	}
-}
-
-/*
-void write_str_to_txt();
-void encode_insts(); 
-*/
